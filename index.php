@@ -82,7 +82,6 @@ if (!file_exists($loginImage)) {
                         <i class="fas fa-sign-in-alt"></i> Login
                     </button>
                 </form>
-                <p class="login-hint">Default: mervmaii / mervmaii123 — change in Settings after first login.</p>
             </div>
         </div>
     </div>

@@ -1,9 +1,3 @@
--- Mervmaii Couple System Database
--- Export this file and import to your database named 'mervmaii'
-
-CREATE DATABASE IF NOT EXISTS mervmaii;
-USE mervmaii;
-
 -- Users table (couple login - shared or separate accounts)
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
