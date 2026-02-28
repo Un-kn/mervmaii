@@ -517,6 +517,10 @@ body {
     color: var(--primary);
 }
 
+.p-content{
+    width: 100%;
+}
+
 /* Dashboard */
 .dashboard-cards {
     display: grid;

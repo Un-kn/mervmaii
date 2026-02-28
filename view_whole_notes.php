@@ -39,7 +39,7 @@ if (!$note) {
         </span>
     </div>
     <div class="note-content-full">
-        <?php echo nl2br(htmlspecialchars($note['content'])); ?>
+        <p class="p-content"><?php echo nl2br(htmlspecialchars($note['content'])); ?></p>
     </div>
 </div>
 
