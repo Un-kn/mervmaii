@@ -832,6 +832,9 @@ body {
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
     transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .note-card:hover {
@@ -858,19 +861,59 @@ body {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
+    flex-grow: 1;
+}
+
+/* full note display should wrap long lines to avoid overflowing the card */
+.note-content-full {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    /* ensure even continuous strings wrap to avoid overflow */
+    word-break: break-all;
+    white-space: pre-wrap;
 }
 
 .note-meta {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
     flex-wrap: wrap;
     font-size: 0.8rem;
     color: var(--text-muted);
 }
 
+.note-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.note-meta-full {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
 .note-meta .btn {
     margin-left: auto;
+}
+
+.note-view-link {
+    color: var(--primary);
+    text-decoration: none;
+    cursor: pointer;
+    transition: text-decoration 0.2s;
+}
+
+.note-view-link:hover {
+    text-decoration: underline;
 }
 
 /* Announcements */

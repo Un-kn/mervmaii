@@ -48,7 +48,7 @@ if ($editId) {
             $activeAuthor = $authorFilter;
             $authors = [
                 '' => 'All',
-                'Mervin Parinas' => 'Mervin',
+                'Mervin Parina' => 'Mervin',
                 'Rhea Mae Magallanes' => 'Rhea',
             ];
             foreach ($authors as $full => $label):
@@ -88,19 +88,22 @@ if ($editId) {
             <h3><?php echo htmlspecialchars($n['title']); ?></h3>
             <?php $plainContent = $n['content'] ?? ''; ?>
             <p class="note-content note-preview"><?php echo nl2br(htmlspecialchars($plainContent)); ?></p>
-            <a href="view_whole_notes.php?id=<?php echo $n['id']; ?>" class="btn btn-sm btn-outline">View</a>
+            <a href="view_whole_notes.php?id=<?php echo $n['id']; ?>" class="note-view-link">View</a><br>
             <div class="note-meta">
-                <span>
-                    <i class="fas fa-user"></i>
-                    <?php echo htmlspecialchars($n['author_name'] ?: 'Unknown'); ?>
-                </span>
-                <span>
-                    <i class="fas fa-clock"></i>
-                    <?php echo date('M j, Y g:i A', strtotime($n['created_at'])); ?>
-                </span>
+                <div class="note-info">
+                    <span>
+                        <i class="fas fa-user"></i>
+                        <?php echo htmlspecialchars($n['author_name'] ?: 'Unknown'); ?>
+                    </span>
+                    <span>
+                        <i class="fas fa-clock"></i>
+                        <?php echo date('M j, Y g:i A', strtotime($n['created_at'])); ?>
+                    </span>
+                </div>
                 <a href="notes.php?edit=<?php echo $n['id']; ?>" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></a>
                 <a href="note_delete.php?id=<?php echo $n['id']; ?>" class="btn btn-sm btn-outline" onclick="return confirm('Delete this note?');"><i class="fas fa-trash"></i></a>
             </div>
+            <br>
             <?php
                 $nid = (int)$n['id'];
                 $reactions = $noteReactions[$nid] ?? [];
@@ -147,7 +150,10 @@ if ($editId) {
                         $summaryParts = [];
                         foreach ($namesByType as $type => $names) {
                             if (empty($names)) continue;
-                            $summaryParts[] = $reactionEmoji[$type] . ' ' . implode(', ', array_unique($names));
+                            $filteredNames = array_diff(array_unique($names), [$currentUser]);
+                            if (!empty($filteredNames)) {
+                                $summaryParts[] = $reactionEmoji[$type] . ' ' . implode(', ', $filteredNames);
+                            }
                         }
                 ?>
                     <div class="reaction-summary">

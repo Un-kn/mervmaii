@@ -28,13 +28,16 @@ if (!$note) {
 
 <div class="card">
     <h2><?php echo htmlspecialchars($note['title']); ?></h2>
-    <p class="muted">
-        <i class="fas fa-user"></i>
-        <?php echo htmlspecialchars($note['author_name'] ?: 'Unknown'); ?>
-        &nbsp;·&nbsp;
-        <i class="fas fa-clock"></i>
-        <?php echo date('M j, Y g:i A', strtotime($note['created_at'])); ?>
-    </p>
+    <div class="note-meta-full">
+        <span>
+            <i class="fas fa-user"></i>
+            <?php echo htmlspecialchars($note['author_name'] ?: 'Unknown'); ?>
+        </span>
+        <span>
+            <i class="fas fa-clock"></i>
+            <?php echo date('M j, Y g:i A', strtotime($note['created_at'])); ?>
+        </span>
+    </div>
     <div class="note-content-full">
         <?php echo nl2br(htmlspecialchars($note['content'])); ?>
     </div>

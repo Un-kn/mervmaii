@@ -199,7 +199,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $summaryParts = [];
                         foreach ($namesByType as $type => $names) {
                             if (empty($names)) continue;
-                            $summaryParts[] = $reactionEmoji[$type] . ' ' . implode(', ', array_unique($names));
+                            $filteredNames = array_diff(array_unique($names), [$currentUser]);
+                            if (!empty($filteredNames)) {
+                                $summaryParts[] = $reactionEmoji[$type] . ' ' . implode(', ', $filteredNames);
+                            }
                         }
                 ?>
                     <div class="reaction-summary">
