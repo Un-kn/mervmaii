@@ -40,13 +40,36 @@ CREATE TABLE IF NOT EXISTS photos (
     FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Reactions on individual photos
+CREATE TABLE IF NOT EXISTS photo_reactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    photo_id INT NOT NULL,
+    reactor VARCHAR(100) NOT NULL COMMENT 'Mervin Parinas or Rhea Mae Magallanes',
+    reaction_type ENUM('like','heart','care','wow','sad','angry') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (photo_id) REFERENCES photos(id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_photo_reactor (photo_id, reactor)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Love notes
 CREATE TABLE IF NOT EXISTS love_notes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
     content TEXT NOT NULL,
+    author_name VARCHAR(100) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Reactions on love notes
+CREATE TABLE IF NOT EXISTS love_note_reactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    note_id INT NOT NULL,
+    reactor VARCHAR(100) NOT NULL COMMENT 'Mervin Parinas or Rhea Mae Magallanes',
+    reaction_type ENUM('like','heart','care','wow','sad','angry') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (note_id) REFERENCES love_notes(id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_note_reactor (note_id, reactor)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Announcements / Schedule (dates, lakad, notifications)

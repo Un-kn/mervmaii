@@ -32,6 +32,26 @@ if ($anniversary) {
 
 // Upcoming announcements
 $upcoming = $pdo->query("SELECT id, title, schedule_date, schedule_time FROM announcements WHERE schedule_date >= CURDATE() ORDER BY schedule_date ASC, schedule_time ASC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
+
+// Daily Bible verse (lightweight: in-memory list only)
+$verses = [
+    ['ref' => 'Jeremiah 29:11', 'text' => '“For I know the plans I have for you,” declares the LORD, “plans to prosper you and not to harm you, plans to give you hope and a future.”'],
+    ['ref' => 'Psalm 23:1', 'text' => 'The LORD is my shepherd, I lack nothing.'],
+    ['ref' => 'Song of Songs 2:16', 'text' => 'My beloved is mine and I am his.'],
+    ['ref' => '1 Corinthians 13:4-5', 'text' => 'Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking.'],
+    ['ref' => '1 Corinthians 13:7', 'text' => 'Love always protects, always trusts, always hopes, always perseveres.'],
+    ['ref' => 'Ecclesiastes 4:9', 'text' => 'Two are better than one, because they have a good return for their labor.'],
+    ['ref' => 'Colossians 3:14', 'text' => 'And over all these virtues put on love, which binds them all together in perfect unity.'],
+    ['ref' => 'Romans 12:10', 'text' => 'Be devoted to one another in love. Honor one another above yourselves.'],
+    ['ref' => '1 John 4:19', 'text' => 'We love because he first loved us.'],
+    ['ref' => 'Philippians 4:6-7', 'text' => 'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God... will guard your hearts and your minds in Christ Jesus.'],
+];
+$verseOfTheDay = null;
+if (!empty($verses)) {
+    $key = date('Y-m-d');
+    $index = crc32($key) % count($verses);
+    $verseOfTheDay = $verses[$index];
+}
 ?>
 <div class="page-header">
     <h1><i class="fas fa-home"></i> Dashboard</h1>
@@ -70,6 +90,13 @@ $upcoming = $pdo->query("SELECT id, title, schedule_date, schedule_time FROM ann
 </div>
 
 <div class="dashboard-grid">
+    <?php if ($verseOfTheDay): ?>
+    <section class="card animate-fade-in">
+        <h2><i class="fas fa-book-bible"></i> Daily Bible Verse</h2>
+        <p class="bible-verse-text">"<?php echo htmlspecialchars($verseOfTheDay['text']); ?>"</p>
+        <p class="bible-verse-ref"><?php echo htmlspecialchars($verseOfTheDay['ref']); ?></p>
+    </section>
+    <?php endif; ?>
     <section class="card animate-fade-in">
         <h2><i class="fas fa-bell"></i> Upcoming Dates & Schedules</h2>
         <?php if (empty($upcoming)): ?>

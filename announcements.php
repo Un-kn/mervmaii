@@ -58,6 +58,10 @@ $announcements = $pdo->query('SELECT * FROM announcements ORDER BY schedule_date
 
 <div class="announcement-list-page">
     <?php foreach ($announcements as $a): ?>
+        <?php
+            $isDone = !empty($a['is_read']);
+            $statusLabel = $isDone ? '✓ Done' : 'Pending';
+        ?>
         <div class="announcement-card <?php echo $a['schedule_date'] >= date('Y-m-d') ? 'upcoming' : ''; ?>">
             <div class="announcement-date">
                 <span class="day"><?php echo date('j', strtotime($a['schedule_date'])); ?></span>
@@ -68,7 +72,18 @@ $announcements = $pdo->query('SELECT * FROM announcements ORDER BY schedule_date
                 <?php if ($a['content']): ?><p><?php echo nl2br(htmlspecialchars($a['content'])); ?></p><?php endif; ?>
                 <?php if ($a['schedule_time']): ?><p class="time"><i class="fas fa-clock"></i> <?php echo date('g:i A', strtotime($a['schedule_time'])); ?></p><?php endif; ?>
                 <?php if ($a['location']): ?><p class="location"><i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($a['location']); ?></p><?php endif; ?>
+                <p class="announcement-status">
+                    <span class="status-pill <?php echo $isDone ? 'status-done' : 'status-pending'; ?>">
+                        <?php echo $statusLabel; ?>
+                    </span>
+                </p>
                 <div class="announcement-actions">
+                    <form method="post" action="announcement_status.php" class="status-form">
+                        <input type="hidden" name="id" value="<?php echo $a['id']; ?>">
+                        <button type="submit" class="btn btn-sm btn-outline">
+                            <i class="fas fa-check-circle"></i> Update Status
+                        </button>
+                    </form>
                     <a href="announcements.php?edit=<?php echo $a['id']; ?>" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></a>
                     <a href="announcement_delete.php?id=<?php echo $a['id']; ?>" class="btn btn-sm btn-outline" onclick="return confirm('Delete this?');"><i class="fas fa-trash"></i></a>
                 </div>

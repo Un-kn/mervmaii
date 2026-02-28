@@ -16,10 +16,14 @@ if ($title === '' || $content === '') {
     exit;
 }
 
+$authorName = $_SESSION['display_name'] ?? null;
+
 if ($id) {
-    $pdo->prepare('UPDATE love_notes SET title = ?, content = ?, updated_at = NOW() WHERE id = ?')->execute([$title, $content, $id]);
+    $pdo->prepare('UPDATE love_notes SET title = ?, content = ?, author_name = ?, updated_at = NOW() WHERE id = ?')
+        ->execute([$title, $content, $authorName, $id]);
 } else {
-    $pdo->prepare('INSERT INTO love_notes (title, content) VALUES (?, ?)')->execute([$title, $content]);
+    $pdo->prepare('INSERT INTO love_notes (title, content, author_name) VALUES (?, ?, ?)')
+        ->execute([$title, $content, $authorName]);
 }
 header('Location: notes.php');
 exit;
