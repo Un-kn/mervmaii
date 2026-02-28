@@ -14,7 +14,7 @@ $pdo = getDB();
 $noteId = isset($_POST['note_id']) ? (int)$_POST['note_id'] : 0;
 $reaction = $_POST['reaction_type'] ?? '';
 
-$allowed = ['like','heart','care','wow','sad','angry'];
+$allowed = ['like','heart','care','wow','sad','angry','hahaha'];
 if (!$noteId || !in_array($reaction, $allowed, true)) {
     http_response_code(400);
     echo json_encode(['ok' => false]);

@@ -14,7 +14,7 @@ $pdo = getDB();
 $photoId = isset($_POST['photo_id']) ? (int)$_POST['photo_id'] : 0;
 $reaction = $_POST['reaction_type'] ?? '';
 
-$allowed = ['like','heart','care','wow','sad','angry'];
+$allowed = ['like','heart','care','wow','sad','angry','hahaha'];
 if (!$photoId || !in_array($reaction, $allowed, true)) {
     http_response_code(400);
     echo json_encode(['ok' => false]);

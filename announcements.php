@@ -85,7 +85,7 @@ $announcements = $pdo->query('SELECT * FROM announcements ORDER BY schedule_date
                         </button>
                     </form>
                     <a href="announcements.php?edit=<?php echo $a['id']; ?>" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></a>
-                    <a href="announcement_delete.php?id=<?php echo $a['id']; ?>" class="btn btn-sm btn-outline" onclick="return confirm('Delete this?');"><i class="fas fa-trash"></i></a>
+                    <a href="announcement_delete.php?id=<?php echo $a['id']; ?>" class="btn btn-sm btn-outline delete-confirm" data-message="Delete this announcement?"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
         </div>

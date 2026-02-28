@@ -48,7 +48,7 @@ if ($editId) {
             $activeAuthor = $authorFilter;
             $authors = [
                 '' => 'All',
-                'Mervin Parina' => 'Mervin',
+                'Mervin Parinas' => 'Mervin',
                 'Rhea Mae Magallanes' => 'Rhea',
             ];
             foreach ($authors as $full => $label):
@@ -93,7 +93,14 @@ if ($editId) {
                 <div class="note-info">
                     <span>
                         <i class="fas fa-user"></i>
-                        <?php echo htmlspecialchars($n['author_name'] ?: 'Unknown'); ?>
+                        <?php
+                            $currentUser = trim($_SESSION['display_name'] ?? ($_SESSION['username'] ?? ''));
+                            $authorDisplay = $n['author_name'] ?: 'Unknown';
+                            if ($authorDisplay === $currentUser && $currentUser !== '') {
+                                $authorDisplay = 'You';
+                            }
+                        ?>
+                        <?php echo htmlspecialchars($authorDisplay); ?>
                     </span>
                     <span>
                         <i class="fas fa-clock"></i>
@@ -101,7 +108,7 @@ if ($editId) {
                     </span>
                 </div>
                 <a href="notes.php?edit=<?php echo $n['id']; ?>" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i></a>
-                <a href="note_delete.php?id=<?php echo $n['id']; ?>" class="btn btn-sm btn-outline" onclick="return confirm('Delete this note?');"><i class="fas fa-trash"></i></a>
+                <a href="note_delete.php?id=<?php echo $n['id']; ?>" class="btn btn-sm btn-outline delete-confirm" data-message="Delete this note?"><i class="fas fa-trash"></i></a>
             </div>
             <br>
             <?php
@@ -109,8 +116,8 @@ if ($editId) {
                 $reactions = $noteReactions[$nid] ?? [];
                 $currentUser = trim($_SESSION['display_name'] ?? ($_SESSION['username'] ?? ''));
                 $userReaction = null;
-                $counts = ['like' => 0, 'heart' => 0, 'care' => 0, 'wow' => 0, 'sad' => 0, 'angry' => 0];
-                $namesByType = ['like' => [], 'heart' => [], 'care' => [], 'wow' => [], 'sad' => [], 'angry' => []];
+                $counts = ['like' => 0, 'heart' => 0, 'care' => 0, 'wow' => 0, 'sad' => 0, 'angry' => 0, 'hahaha' => 0];
+                $namesByType = ['like' => [], 'heart' => [], 'care' => [], 'wow' => [], 'sad' => [], 'angry' => [], 'hahaha' => []];
                 foreach ($reactions as $r) {
                     $type = $r['reaction_type'];
                     if (!isset($counts[$type])) continue;
@@ -127,6 +134,7 @@ if ($editId) {
                     'wow' => '😮',
                     'sad' => '😢',
                     'angry' => '😡',
+                    'hahaha' => '😂',
                 ];
                 $mainLabel = $userReaction ? ucfirst($userReaction) : 'Like';
                 $mainEmoji = $userReaction ? $reactionEmoji[$userReaction] : '👍';

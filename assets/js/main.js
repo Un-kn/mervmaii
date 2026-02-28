@@ -25,6 +25,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Custom Confirmation Dialog - Delete links
+    document.querySelectorAll('.delete-confirm').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var href = this.getAttribute('href');
+            var message = this.getAttribute('data-message') || 'Are you sure?';
+            showCustomConfirm(message, 'Delete Confirmation').then(function(confirmed) {
+                if (confirmed) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+
+    // Custom Confirmation Dialog - Form submissions
+    document.querySelectorAll('.form-confirm').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var message = this.getAttribute('data-message') || 'Are you sure?';
+            var form_ref = this;
+            showCustomConfirm(message, 'Confirm Action').then(function(confirmed) {
+                if (confirmed) {
+                    form_ref.submit();
+                }
+            });
+        });
+    });
+
     // Reactions (photos & love notes)
     var containers = document.querySelectorAll('.reaction-container');
     containers.forEach(function (container) {
@@ -117,4 +145,48 @@ function sendReaction(container, type) {
         // Reload to reflect updated counts and names
         window.location.reload();
     }).catch(function () {});
+}
+/* Custom Confirmation Dialog */
+var customConfirmCallback = null;
+
+function showCustomConfirm(message, title = 'Confirm Action') {
+    return new Promise(function(resolve) {
+        var modal = document.getElementById('customModal');
+        var modalTitle = document.getElementById('modalTitle');
+        var modalMessage = document.getElementById('modalMessage');
+        var modalConfirm = document.getElementById('modalConfirm');
+        var modalCancel = document.getElementById('modalCancel');
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+
+        modal.classList.add('active');
+
+        function cleanup() {
+            modal.classList.remove('active');
+            modalConfirm.removeEventListener('click', onConfirm);
+            modalCancel.removeEventListener('click', onCancel);
+            document.removeEventListener('keydown', onEscape);
+        }
+
+        function onConfirm() {
+            cleanup();
+            resolve(true);
+        }
+
+        function onCancel() {
+            cleanup();
+            resolve(false);
+        }
+
+        function onEscape(e) {
+            if (e.key === 'Escape') {
+                onCancel();
+            }
+        }
+
+        modalConfirm.addEventListener('click', onConfirm);
+        modalCancel.addEventListener('click', onCancel);
+        document.addEventListener('keydown', onEscape);
+    });
 }

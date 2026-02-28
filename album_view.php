@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="button" class="btn btn-primary" onclick="document.getElementById('uploadForm').classList.toggle('hidden')">
             <i class="fas fa-upload"></i> Upload Photo
         </button>
-        <a href="album_delete.php?id=<?php echo $id; ?>" class="btn btn-outline btn-danger" onclick="return confirm('Delete this entire album and all its photos?');">
+        <a href="album_delete.php?id=<?php echo $id; ?>" class="btn btn-outline btn-danger delete-confirm" data-message="Delete this entire album and all its photos?">
             <i class="fas fa-trash"></i> Delete Album
         </a>
     </div>
@@ -158,8 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $reactions = $photoReactions[$pid] ?? [];
                 $currentUser = trim($_SESSION['display_name'] ?? ($_SESSION['username'] ?? ''));
                 $userReaction = null;
-                $counts = ['like' => 0, 'heart' => 0, 'care' => 0, 'wow' => 0, 'sad' => 0, 'angry' => 0];
-                $namesByType = ['like' => [], 'heart' => [], 'care' => [], 'wow' => [], 'sad' => [], 'angry' => []];
+                $counts = ['like' => 0, 'heart' => 0, 'care' => 0, 'wow' => 0, 'sad' => 0, 'angry' => 0, 'hahaha' => 0];
+                $namesByType = ['like' => [], 'heart' => [], 'care' => [], 'wow' => [], 'sad' => [], 'angry' => [], 'hahaha' => []];
                 foreach ($reactions as $r) {
                     $type = $r['reaction_type'];
                     if (!isset($counts[$type])) continue;
@@ -176,6 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'wow' => '😮',
                     'sad' => '😢',
                     'angry' => '😡',
+                    'hahaha' => '😂',
                 ];
                 $mainLabel = $userReaction ? ucfirst($userReaction) : 'Like';
                 $mainEmoji = $userReaction ? $reactionEmoji[$userReaction] : '👍';
@@ -211,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php endif; ?>
             </div>
-            <form method="post" class="photo-delete" onsubmit="return confirm('Delete this photo?');">
+            <form method="post" class="photo-delete form-confirm" data-message="Delete this photo?">
                 <input type="hidden" name="delete_photo" value="<?php echo $p['id']; ?>">
                 <button type="submit" class="btn btn-sm btn-outline"><i class="fas fa-trash"></i></button>
             </form>

@@ -18,6 +18,21 @@ if (isset($pdo) && $pdo) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="app-body">
+    <!-- Custom Confirmation Modal -->
+    <div id="customModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <h3 id="modalTitle">Confirm Action</h3>
+            </div>
+            <div class="custom-modal-body">
+                <p id="modalMessage">Are you sure?</p>
+            </div>
+            <div class="custom-modal-footer">
+                <button id="modalCancel" class="btn btn-outline">Cancel</button>
+                <button id="modalConfirm" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
     <nav class="navbar">
         <a href="dashboard.php" class="nav-brand">
             <i class="fas fa-heart"></i> Mervmaii
