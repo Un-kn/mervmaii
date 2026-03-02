@@ -19,6 +19,17 @@ if ($title === '' || $content === '') {
 $authorName = $_SESSION['display_name'] ?? null;
 
 if ($id) {
+    // Verify that current user is the original author before allowing edit
+    $st = $pdo->prepare('SELECT author_name FROM love_notes WHERE id = ?');
+    $st->execute([$id]);
+    $existingNote = $st->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$existingNote || $existingNote['author_name'] !== $authorName) {
+        // Unauthorized - not the original author
+        header('Location: notes.php');
+        exit;
+    }
+    
     $pdo->prepare('UPDATE love_notes SET title = ?, content = ?, author_name = ?, updated_at = NOW() WHERE id = ?')
         ->execute([$title, $content, $authorName, $id]);
 } else {

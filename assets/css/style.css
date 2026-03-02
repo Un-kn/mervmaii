@@ -705,7 +705,7 @@ body {
 
 .muted {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
 }
 
 /* Albums */
@@ -869,17 +869,16 @@ body {
 }
 
 /* full note display should wrap long lines to avoid overflowing the card */
-.note-content-full {
+/* .note-content-full {
     margin: 0 0 0.75rem 0;
     font-size: 0.95rem;
     line-height: 1.5;
     color: var(--text);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    /* ensure even continuous strings wrap to avoid overflow */
     word-break: break-all;
     white-space: pre-wrap;
-}
+} */
 
 .note-meta {
     display: flex;

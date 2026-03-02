@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100),
     display_name VARCHAR(100) DEFAULT 'Mervmaii',
     anniversary_date DATE NOT NULL COMMENT 'Start date of relationship',
+    profile_picture VARCHAR(255) DEFAULT NULL COMMENT 'Profile picture filename in uploads/profiles/',
+    last_activity TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Track when user was last active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

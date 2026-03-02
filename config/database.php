@@ -23,6 +23,36 @@ function getDB() {
     return $pdo;
 }
 
+// Track user activity (update last_activity timestamp)
+function updateUserActivity($userId) {
+    try {
+        $pdo = getDB();
+        $st = $pdo->prepare("UPDATE users SET last_activity = CURRENT_TIMESTAMP WHERE id = ?");
+        $st->execute([$userId]);
+    } catch (Exception $e) {
+        // Silently fail - not critical
+    }
+}
+
+// Check if user is currently online (active in last 5 minutes)
+function isUserOnline($userId) {
+    try {
+        $pdo = getDB();
+        $st = $pdo->prepare("SELECT last_activity FROM users WHERE id = ?");
+        $st->execute([$userId]);
+        $result = $st->fetch(PDO::FETCH_ASSOC);
+        if (!$result) return false;
+        
+        $lastActivity = strtotime($result['last_activity']);
+        $now = time();
+        $fiveMinutesAgo = $now - (5 * 60);
+        
+        return $lastActivity >= $fiveMinutesAgo;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 //for live server
 // define('DB_HOST', 'sql209.infinityfree.com');
 // define('DB_NAME', 'if0_41218263_mervmaii');

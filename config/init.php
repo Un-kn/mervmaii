@@ -2,8 +2,16 @@
 session_start();
 require_once __DIR__ . '/database.php';
 
+// Ensure PHP uses the correct timezone (Philippines)
+date_default_timezone_set('Asia/Manila');
 // One-time: ensure default users exist with correct password
 $pdo = getDB();
+// Set MySQL session timezone to match PHP timezone to avoid TIMESTAMP conversions
+try {
+    $pdo->exec("SET time_zone = '+08:00'");
+} catch (Exception $e) {
+    // ignore if the DB user can't change session timezone
+}
 $defaultPassword = 'mervmaii123';
 $hash = password_hash($defaultPassword, PASSWORD_DEFAULT);
 
